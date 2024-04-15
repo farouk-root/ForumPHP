@@ -16,6 +16,27 @@ $posts = PostController::getPosts();
         crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./assets/styles.css" />
+    <style>
+        a.button {
+            display: inline-block;
+            margin: 0 5px;
+            padding: 10px 20px; /* Increased padding for a bigger button */
+            background-color: #3ea175;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none; /* Remove underline */
+            cursor: pointer;
+        }
+
+        .crud__container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+
+    </style>
     <title>wadhah s DASHBOARD</title>
 </head>
 <body id="body">
@@ -111,34 +132,40 @@ $posts = PostController::getPosts();
 
             </div>
 
+            
+
             <!-- CRUD TABLE -->
-            <div class="crud__table">
-                <div class="crud__table-header">
-                    <div>#</div>
-                    <div>Title</div>
-                    <div>Content</div>
-                    <div>Actions</div>
+            <div class="crud__container">
+                <a href="AddTest.php" class="button" id="addPostButton">Add Post</a>
+                <div class="crud__table">
+                    <div class="crud__table-header">
+
+                        <div>#</div>
+                        <div>Title</div>
+                        <div>Content</div>
+                        <div>Actions</div>
+                    </div>
+
+                    <?php
+                    // Loop through each post and display them in the table
+                    foreach ($posts as $index => $post) {
+                        echo '<div class="crud__table-row">';
+                        echo '<div data-label="#">' . ($index + 1) . '</div>';
+                        echo '<div data-label="Title">' . $post['post_title'] . '</div>';
+                        echo '<div data-label="Content">' . $post['post_content'] . '</div>';
+                        echo '<div data-label="Actions">';
+                        echo '<button>';
+                        echo "<a href='edit_post.php?id=" . $post['id'] . "'><i class='fa fa-pencil'></i></a>";
+                        echo '</button>';
+                        echo '<button>';
+                        echo "<a href='delete_post.php?id=" . $post['id'] . "'><i class='fa fa-trash'></i></a>";;
+                        echo '</button>';
+
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                    ?>
                 </div>
-
-                <?php
-                // Loop through each post and display them in the table
-                foreach ($posts as $index => $post) {
-                    echo '<div class="crud__table-row">';
-                    echo '<div data-label="#">' . ($index + 1) . '</div>';
-                    echo '<div data-label="Title">' . $post['post_title'] . '</div>';
-                    echo '<div data-label="Content">' . $post['post_content'] . '</div>';
-                    echo '<div data-label="Actions">';
-                    echo '<button>';
-                    echo "<a href='edit_post.php?id=" . $post['id'] . "'><i class='fa fa-pencil'></i></a>";
-                    echo '</button>';
-                    echo '<button>';
-                    echo "<a href='delete_post.php?id=" . $post['id'] . "'><i class='fa fa-trash'></i></a>";;
-                    echo '</button>';
-
-                    echo '</div>';
-                    echo '</div>';
-                }
-                ?>
             </div>
         </div>
     </main>

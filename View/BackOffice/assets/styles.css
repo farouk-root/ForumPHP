@@ -437,7 +437,17 @@ crud__table {
 .crud__table-row > div {
   text-align: center;
 }
-
+a.button {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 5px 10px;
+    background-color: #3ea175;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none; /* Remove underline */
+    cursor: pointer;
+}
 .crud__table-row > div[data-label="Actions"] button {
   margin: 0 5px;
   padding: 5px 10px;
