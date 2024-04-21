@@ -32,7 +32,7 @@
          $this->content = $content;
          $this->upVotes = $upVotes;
          // Set createdAt to today's date
-         $this->createdAt = new DateTime('2022-04-16 10:00:00');
+         $this->createdAt = new DateTime();
          // Set updatedAt to today's date
          $this->updatedAt = new DateTime();
      }

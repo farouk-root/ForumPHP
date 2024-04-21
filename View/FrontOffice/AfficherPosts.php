@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="desc-intro">
             <h1 class="desc-style">Forgez votre avenir, <br>
                 <span> trouvez votre voie professionnelle ici !</span> </h1>
-            <a href="#" class="btn-decouvrir">découvrir plus</a>
+            <a href="../BackOffice/AddTest.php" class="btn-decouvrir">découvrir plus</a>
         </div>
     </div>
 </div>
@@ -129,8 +129,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 
 <?php
-// Loop through each post and display them in the table
+
+$posts = array_reverse($posts);
 foreach ($posts as $index => $post) {
+    $postId  = $post['id'];
+    $comments = CommentaireController::getCommentsByPostId($postId);
+    $commentsLength = count($comments);
     ?>
 
     <div class="fb-post" id="fpost0">
@@ -175,11 +179,11 @@ foreach ($posts as $index => $post) {
                         <img src="./assets/svg/like.svg" alt="">
                     </div>
                     <div class="id-name">
-                        <p>You, Ahmed and <span>9</span> others</p>
+                        <p>You, Ahmed and <span> <?php echo $post['up_votes'];?></span> others</p>
                     </div>
                 </div>
                 <div class="right-part">
-                    <p><span>1</span>Comments</p>
+                    <p><span><?php echo $commentsLength; ?></span>Comments</p>
                 </div>
             </div>
             <div class="bottom-part">
@@ -204,8 +208,7 @@ foreach ($posts as $index => $post) {
             <h4>All comments <img src="./assets/svg/sort-down.svg" class="all-comments-h4-i" alt=""></h4>
         </div>
             <?php
-            $postId  = $post['id'];
-            $comments = CommentaireController::getCommentsByPostId($postId);
+
 $maxCommentsToShow = 3; // Maximum number of comments to display initially
 $commentsToDisplay = array_slice($comments, 0, $maxCommentsToShow); // Get the first 5 comments
 $additionalCommentsExist = count($comments) > $maxCommentsToShow; // Check if more comments exist
