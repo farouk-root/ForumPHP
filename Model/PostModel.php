@@ -25,8 +25,9 @@
      * @param int $upVotes
      * @param int $downVotes
      */
-     public function __construct($title, $content, $upVotes)
+     public function __construct($idAuthor,$title, $content, $upVotes)
      {
+         $this->idAuthor = $idAuthor;
          $this->title = $title;
          $this->content = $content;
          $this->upVotes = $upVotes;

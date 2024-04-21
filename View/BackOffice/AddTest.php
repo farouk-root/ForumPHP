@@ -5,8 +5,10 @@ if (isset($_POST['Envoyer'])) {
     $title = $_POST['title'];
     $content = $_POST['content'];
     $upVotes = $_POST['upVotes'];
-    $newPost = new PostModel($title, $content, $upVotes);
+    $newPost = new PostModel(1,$title, $content, $upVotes);
     $id = PostController::addPost($newPost);
+    if ($id > 0)
+        header('Location: AfficherPosts.php');
     echo $id;
 }
 ?>
