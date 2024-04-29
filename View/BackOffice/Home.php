@@ -1,8 +1,4 @@
-<?php
 
-include_once "../../Controller/PostController.php";
-$posts = PostController::getPosts();
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,31 +29,6 @@ $posts = PostController::getPosts();
             display: flex;
             justify-content: flex-end;
             align-items: center;
-        }
-        .enabled-button {
-            background-color: red;  /* Red for enabled buttons */
-            color: white;  /* White text for contrast */
-            padding: 8px 16px;  /* Padding for the button */
-            border: none;  /* No border */
-            border-radius: 4px;  /* Rounded corners */
-            cursor: pointer;  /* Cursor changes to pointer */
-            text-align: center;  /* Center align text */
-            display: inline-block;  /* Display as inline block */
-        }
-
-        .disabled-button {
-            background-color: gray;  /* Gray for disabled buttons */
-            color: white;  /* White text for contrast */
-            padding: 8px 16px;  /* Same padding as enabled buttons */
-            border: none;  /* No border */
-            border-radius: 4px;  /* Rounded corners */
-            text-align: center;  /* Center align text */
-            display: inline-block;  /* Display as inline block */
-            cursor: not-allowed;  /* Cursor indicates the button is disabled */
-        }
-
-        .disabled-button a {
-            color: white;  /* Ensure the link inside the disabled button is styled correctly */
         }
 
 
@@ -157,66 +128,6 @@ $posts = PostController::getPosts();
 
             </div>
 
-            
-
-            <!-- CRUD TABLE -->
-            <div class="crud__container">
-                <a href="AddTest.php" class="button" id="addPostButton">Add Post</a>
-                <div class="crud__table">
-                    <div class="crud__table-header">
-
-                        <div>#</div>
-                        <div>Title</div>
-                        <div>Actions</div>
-                    </div>
-
-                    <?php
-                    // Loop through each post and display them in the table
-                    $posts = array_reverse($posts);
-                    foreach ($posts as $index => $post) {
-                        $postStatus = $post['status'] ;
-
-                        // Determine the class based on the post's status
-
-
-                        echo '<div class="crud__table-row">';
-                        echo '<div data-label="#">' . $post['id'] . '</div>';
-                        echo '<div data-label="Title">' . $post['post_title'] . '</div>';
-                        echo '<div data-label="Actions">';
-                        echo '<button>';
-                        echo "<a href='edit_post.php?id=" . $post['id'] . "'><i class='fa fa-pencil'></i></a>";
-                        echo '</button>';
-                        echo '<button>';
-                        echo "<a   href='delete_post.php?id=" . $post['id'] . "'><i class='fa fa-trash'></i></a>";;
-                        echo '</button>';
-                    $postStatus = $post['status'];  // Post status
-
-                    // Determine the button attributes based on the status
-                    if ($postStatus == 1) {
-                        // If the post status is 1, the button is disabled
-                        $buttonClass = "disabled-button";  // Gray or some other color for disabled
-                        $buttonAttributes = "disabled";  // Disable the button
-                    } else {
-                        // If the post status is not 1, the button is enabled and red
-                        $buttonClass = "enabled-button";  // Red color for enabled
-                        $buttonAttributes = "";  // No additional attributes for enabled
-                    }
-
-                    // Define the link for the action
-                    $confirmLink = "ConfirmerPost.php?id=" . $post['id'];
-
-                    // Output the button with the correct attributes
-                    echo '<button class="' . $buttonClass . '" ' . $buttonAttributes . '>';
-                    echo "<a href='" . $confirmLink . "' style='text-decoration: none; color: inherit;'><i class='fa fa-check'></i></a>";
-                    echo '</button>';
-
-                        echo '</div>';
-                        echo '</div>';
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
     </main>
 
 
@@ -227,9 +138,9 @@ $posts = PostController::getPosts();
 
         </div>
         <div class="sidebar__menu">
-            <div class="sidebar__link">
+            <div class="sidebar__link active_menu_link">
                 <i class="fa fa-home"></i>
-                <a href="./Home.php">Dashboard</a>
+                <a href="Home.php">Dashboard</a>
             </div>
             <h2>ADMIN</h2>
             <div class="sidebar__link">
@@ -248,9 +159,9 @@ $posts = PostController::getPosts();
                 <a href="#">formation management</a>
             </div>
             <h2>FORUM</h2>
-            <div class="sidebar__link active_menu_link">
+            <div class="sidebar__link ">
                 <i class="fa fa-user"></i>
-                <a href="#">forum management</a>
+                <a href="AfficherPosts.php">forum management</a>
             </div>
             <h2>OFFRE D EMPLOIE</h2>
             <div class="sidebar__link">
@@ -270,4 +181,3 @@ $posts = PostController::getPosts();
 
 </body>
 </html>
-

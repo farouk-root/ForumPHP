@@ -13,6 +13,7 @@
     private int $idAuthor;
     private int $upVotes;
     private int $downVotes;
+    private bool $status;
 
     /**
      * @param int $idPost
@@ -25,7 +26,7 @@
      * @param int $upVotes
      * @param int $downVotes
      */
-     public function __construct($idAuthor,$title, $content, $upVotes)
+     public function __construct($idAuthor,$title, $content, $upVotes,$status)
      {
          $this->idAuthor = $idAuthor;
          $this->title = $title;
@@ -35,6 +36,17 @@
          $this->createdAt = new DateTime();
          // Set updatedAt to today's date
          $this->updatedAt = new DateTime();
+            $this->status = $status;
+     }
+
+     public function isStatus(): bool
+     {
+         return $this->status;
+     }
+
+     public function setStatus(bool $status): void
+     {
+         $this->status = $status;
      }
 
 

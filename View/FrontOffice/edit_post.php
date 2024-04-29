@@ -4,20 +4,13 @@ if (isset($_GET['id']))
     $post = PostController::getPost($_GET['id']);
 else
     header("Location: index.php");
-/*
-echo $post['idPost'];
-echo $post['TITRE'];
-echo $post['Content'];
-echo $post['Create_At'];
-echo $post['Updated_At'];
-echo $post['Upvote'];
-*/
+
 if (isset($_POST['Envoyer'])) {
     $title = $_POST['title'];
     $content = $_POST['content'];
     $upVotes = $_POST['upVotes'];
     $newPost = new PostModel(1,$title, $content, $upVotes);
-    $id = PostController::updatePost($post['idPost'], $title, $content, $upVotes);
+    $id = PostController::updatePost($post['id'], $title, $content, $upVotes);
     header("Location: AfficherPosts.php");
 }
 ?>

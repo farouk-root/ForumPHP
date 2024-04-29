@@ -29,7 +29,7 @@ body {
     padding: 10px 15px;
     margin: 0 auto;
     border-radius: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 100px;
     flex-direction: column;
     background: var(--prim-color);
     box-sizing: border-box;

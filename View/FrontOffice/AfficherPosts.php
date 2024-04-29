@@ -4,6 +4,7 @@ include_once "../../Controller/PostController.php";
 include_once '../../Model/CommentaireModel.php';
 include_once "../../Controller/CommentaireController.php";
 $posts = PostController::getPosts();
+$userId = 1;
 function insert_line_breaks($string, $interval) {
     // Break the string into segments of the specified interval
     $pattern = "/.{1,$interval}/";
@@ -12,7 +13,7 @@ function insert_line_breaks($string, $interval) {
     // Join the segments with a line break
     return implode("<br />", $matches[0]);
 }
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['commentaire-content']) && isset($_POST['post_id'])){
     // Sanitize the content input
     //$content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
     $content = $_POST['commentaire-content'];
@@ -22,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $postId = $_POST['post_id'];
         // Create a new comment model and set its attributes
         $comment = new CommentaireModel(
-            1, // ID of the current user
+            $userId,
             $content,
             new DateTime(),
             $postId
@@ -77,69 +78,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<div id="mother">
 
-    <div id="option">
-        <div class="container">
-            <ul>
-                <li>
-                    <img src="./assets/assets/save_post.png" class="icon">
-                    <span class="option-title">Save Post</span>
-                    <p class="option-title">Add this to your saved items</p>
-                </li>
-                <li class="turn_off_post">
-                    <img src="./assets/assets/notification.png" class="icon">
-                    <span class="option-title">Turn off notification for this post.</span>
-                </li>
-                <li>
-                    <img src="./assets/assets/hide_post.png" class="icon">
-                    <span class="option-title">Hide post</span>
-                    <p class="option-title">Add this to your saved items.</p>
-                </li>
-                <li>
-                    <img src="./assets/assets/snooze.png" class="icon">
-                    <span class="option-title">Snooze</span>
-                    <p class="option-title">Temporarily stop seeing posts.</p>
-                </li>
-                <li>
-                    <img src="./assets/assets/unfollow.png" class="icon">
-                    <span class="option-title">Unfollow Rejwan Islam Rijvy</span>
-                    <p class="option-title">Temporarily stop seeing posts.</p>
-                </li>
-                <li>
-                    <img src="./assets/assets/find_post.png" class="icon">
-                    <span class="option-title">Find support or report pos</span>
-                    <p class="option-title">I'm concerned about this post.</p>
-                </li>
-            </ul>
-        </div>
-    </div>
+<div class="fb-post" id="fpost0">
 
-    <div class="reaction" id="emojies">
-        <div class="row">
-            <img id="e-like" src="./assets/svg/like.svg" alt="">
-            <img id="e-love" src="./assets/svg/love.svg" alt="">
-            <img id="e-care" src="./assets/svg/care.svg" alt="">
-            <img id="e-haha" src="./assets/svg/haha.svg" alt="">
-            <img id="e-wow" src="./assets/svg/wow.svg" alt="">
-            <img id="e-sad" src="./assets/svg/sad.svg" alt="">
-            <img id="e-angry" src="./assets/svg/angry.svg" alt="">
-        </div>
-    </div>
+    <!-- Top Section -->
+    <a href="../BackOffice/AddTest.php" class="btn-decouvrir" style="margin-bottom: 50px">Ajouter Post</a>
 </div>
 
 <?php
 
 $posts = array_reverse($posts);
 foreach ($posts as $index => $post) {
+    if ($post['status'] == 0) {
+        continue;
+    }
     $postId  = $post['id'];
     $comments = CommentaireController::getCommentsByPostId($postId);
     $commentsLength = count($comments);
     ?>
 
     <div class="fb-post" id="fpost0">
-
-        <!-- Top Section -->
 
         <div class="top-s">
             <div class="top-info">
@@ -156,9 +114,21 @@ foreach ($posts as $index => $post) {
                     </div>
                 </div>
                 <div class="top-options">
-                    <button>
-                        <img src="./assets/svg/three_dot.svg">
-                    </button>
+                    <?php
+                    echo '<a href=ShowPost.php?id=' . $postId . ' class="button-style">
+                                <img src="./assets/assets/eye.png" width="30" alt="edit">
+                              </a>';
+                    ?>
+                    <?php
+                    echo '<a href="edit_post.php?id=' . $post['id'] . '" class="button-style">
+                                <img src="./assets/assets/edit.png" width="30" alt="Edit">
+                              </a>';
+                    ?>
+                    <?php
+                    echo '<a href="delete_post.php?id=' . $post['id'] . '" class="button-style">
+                                <img src="./assets/assets/delete.png" width="30" alt="Edit">
+                              </a>';
+                    ?>
                 </div>
             </div>
             <div class="post-content">
@@ -174,9 +144,13 @@ foreach ($posts as $index => $post) {
             <div class="top-part">
                 <div class="left-part">
                     <div class="react">
-                        <img src="./assets/svg/love.svg" alt="">
-                        <img src="./assets/svg/care.svg" alt="">
-                        <img src="./assets/svg/like.svg" alt="">
+
+                        <?php
+                        echo '<a href="upvote.php?postId=' . $postId . '" class="button-style">
+                                <img src="./assets/svg/like.svg" alt="edit">
+                              </a>';
+                        ?>
+
                     </div>
                     <div class="id-name">
                         <p>You, Ahmed and <span> <?php echo $post['up_votes'];?></span> others</p>
@@ -188,18 +162,31 @@ foreach ($posts as $index => $post) {
             </div>
             <div class="bottom-part">
                 <div class="like-btn" fpost="0">
-                    <img src="./assets/svg/thumbs-up.svg" alt="">
+                    <?php
+                    echo '<a href="upvote.php?postId=' . $postId . '" class="button-style">
+                                <img src="./assets/svg/thumbs-up.svg" alt="">
+                                
+                              </a>';
+                    ?>
                     <span>Like</span>
                 </div>
                 <div class="comment-btn" fpost="0">
                     <img src="./assets/svg/message-square.svg" alt="">
                     <span>Comment</span>
                 </div>
+                    <?php
+                    $postUrl = "http://localhost/ForumPHP/View/FrontOffice/ShowPost.php?id=" . $postId;
+                    // Create the Facebook share URL
+                    $facebookShareUrl = "https://www.facebook.com/sharer/sharer.php?u=" . urlencode($postUrl);
+                    ?>
+
                 <div class="share-btn">
-                    <img src="./assets/svg/share-2.svg" alt="">
-                    <span>Share</span>
+                    <a href="<?php echo htmlspecialchars($facebookShareUrl); ?>" target="_blank" rel="noopener noreferrer">
+                        <img src="./assets/svg/share-2.svg" alt="Share on Facebook">
+                        <span>Share</span>
+                    </a>
                 </div>
-            </div>
+
         </div>
 
         <!-- Comment section-->
@@ -209,12 +196,12 @@ foreach ($posts as $index => $post) {
         </div>
             <?php
 
-$maxCommentsToShow = 3; // Maximum number of comments to display initially
-$commentsToDisplay = array_slice($comments, 0, $maxCommentsToShow); // Get the first 5 comments
-$additionalCommentsExist = count($comments) > $maxCommentsToShow; // Check if more comments exist
+            $maxCommentsToShow = 3; // Maximum number of comments to display initially
+            $commentsToDisplay = array_slice($comments, 0, $maxCommentsToShow);
+            $additionalCommentsExist = count($comments) > $maxCommentsToShow;
 
-foreach ($commentsToDisplay as $comment) {
-?>
+            foreach ($commentsToDisplay as $comment) {
+            ?>
         <div class="comment-box">
             <div class="comment-container">
                 <div class="comment">
@@ -226,7 +213,17 @@ foreach ($commentsToDisplay as $comment) {
                         <p><?php echo $comment->getContent(); ?></p>
                     </div>
                     <div class="three-dot">
-                        <img src="./assets/svg/three_dot_gray.svg" class="three-dot-img" alt="">
+
+                        <?php
+                        echo '<a href="edit_commentaire.php?id=' . $post['id'] . '&idComment=' . $comment->getIdComment() . '" class="button-style">
+                                <img src="./assets/assets/edit.png" width="30" alt="edit">
+                              </a>';
+                        ?>
+                        <?php
+                        echo '<a href="delete_comment.php?id=' . $post['id'] . '&idComment=' . $comment->getIdComment() . '" class="button-style">
+                                <img src="./assets/assets/delete.png" width="30" alt="Delete">
+                              </a>';
+                        ?>
                     </div>
                 </div>
                 <div class="comment-lks">
@@ -246,7 +243,10 @@ foreach ($commentsToDisplay as $comment) {
         if ($additionalCommentsExist) {
         ?>
         <div class="read-more">
-            <a href="all-comments.php?postId=<?php echo $postId; ?>">Read More</a>
+            <?php
+            echo '<a href="ShowPost.php?postId=' . $postId . '">Read More</a>';
+            ?>
+
         </div>
         <?php
         }
@@ -272,6 +272,7 @@ foreach ($commentsToDisplay as $comment) {
             </div>
         </div>
 
+    </div>
     </div>
 <?php
 }

@@ -5,10 +5,10 @@ if (isset($_POST['Envoyer'])) {
     $title = $_POST['title'];
     $content = $_POST['content'];
     $upVotes = $_POST['upVotes'];
-    $newPost = new PostModel(1,$title, $content, $upVotes);
+    $newPost = new PostModel(1,$title, $content, $upVotes , false);
     $id = PostController::addPost($newPost);
     if ($id > 0)
-        header('Location: AfficherPosts.php');
+        header('Location: ../FrontOffice/AfficherPosts.php');
     echo $id;
 }
 ?>
